@@ -28,4 +28,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.dubsmash.volley:library:2.0.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
 }
