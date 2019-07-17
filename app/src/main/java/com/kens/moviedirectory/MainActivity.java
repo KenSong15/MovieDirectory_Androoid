@@ -1,11 +1,7 @@
 package com.kens.moviedirectory;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,8 +26,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -65,30 +64,29 @@ public class MainActivity extends AppCompatActivity {
 
         Prefs prefs = new Prefs(MainActivity.this);
         String search = prefs.getSearch();
-        Log.d("moviell: ", search);
+
         getMovies(search);
 
     }
+
 
     //get our movies
     public List<Movie> getMovies(String searchTerm){
         movieList.clear();
 
-        //Log.d("moviell: ", "get movie fired");
         String targetURL = Constants.URL_LEFT + searchTerm + Constants.URL_RIGHT;
-        //Log.d("moviell: ", targetURL);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 targetURL,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("moviell: ", "in onResponse");
+
                         try {
                             JSONArray moviesArray = response.getJSONArray("Search"); // this is the name of the array on the target json file
 
                             for(int i = 0; i < moviesArray.length(); i++){
-                                Log.d("moviell: ", "for fired");
+
                                 JSONObject movieObj = moviesArray.getJSONObject(i);
 
                                 Movie movie = new Movie();
@@ -115,24 +113,8 @@ public class MainActivity extends AppCompatActivity {
 
                     }
         });
-        //Log.d("moviell: ", "here fired");
+
         queue.add(jsonObjectRequest);
-
-        //Log.d("moviell: ", "here fired 2");
-
-        //connectivity check started =======================
-//        boolean connected = false;
-//        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-//        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-//                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-//            //we are connected to a network
-//            connected = true;
-//        }
-//        else
-//            connected = false;
-//        Log.d("moviell: ", Boolean.toString(connected));
-        //connectivity check ended =======================
-
 
         return movieList;
     }
