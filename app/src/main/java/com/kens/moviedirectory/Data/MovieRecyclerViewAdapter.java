@@ -1,6 +1,7 @@
 package com.kens.moviedirectory.Data;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kens.moviedirectory.Activities.MovieDetailActivity;
+import com.kens.moviedirectory.MainActivity;
 import com.kens.moviedirectory.Model.Movie;
 import com.kens.moviedirectory.R;
 import com.squareup.picasso.Picasso;
@@ -69,7 +72,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         TextView year;
         TextView type;
 
-        public ViewHolder(@NonNull View itemView, Context ctx) {
+        public ViewHolder(@NonNull View itemView, final Context ctx) {
             super(itemView);
             context = ctx;
 
@@ -81,7 +84,16 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "Row Tapped", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "Row Tapped", Toast.LENGTH_SHORT).show();
+
+                    Movie movie = movieList.get(getAdapterPosition());
+
+                    Intent intent = new Intent(context, MovieDetailActivity.class);
+
+                    intent.putExtra("movie", movie);
+
+                    ctx.startActivity(intent);
+
                 }
             });
 
